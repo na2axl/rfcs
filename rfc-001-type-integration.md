@@ -8,7 +8,7 @@ A detailed technical proposal for integrating Gir.Core with the GObject type sys
   - [Table of Contents](#table-of-contents)
   - [Key Terms](#key-terms)
   - [Proposal](#proposal)
-  - [Issue A: Wrapping Pointers](#issue-a-wrapping-pointers)
+  - [Issue A: Object Lifetimes](#issue-a-object-lifetimes)
     - [Wrapper Types](#wrapper-types)
     - [Subclass Types](#subclass-types)
       - [Toggle References](#toggle-references)
@@ -40,7 +40,7 @@ For all user-defined C# classes that derive from `GObject.Object`, the library w
 
 In order to implement this, there are a few areas to address. These will need to be solved to achieve the above.
 
-## Issue A: Wrapping Pointers
+## Issue A: Object Lifetimes
 We will recieve pointers to abitrary GObject-based types from functions. For example, `gtk_widget_get_toplevel()` will likely return a pointer to a `GtkWindow` or window subclass `MyWindow`. As we are supporting GtkBuilder, we cannot assume that *we* directly created this object. Thus we need a way to wrap a pointer to a GObject in a type we can return to the user.
 
 ### Wrapper Types
