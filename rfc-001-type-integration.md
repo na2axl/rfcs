@@ -1,5 +1,6 @@
 # GObject Type Integration
-A detailed technical proposal for integrating Gir.Core with the GObject type system.
+A detailed technical proposal for integrating Gir.Core with the GObject type system &mdash; 
+**See [gircore/gir.core#46](https://github.com/gircore/gir.core/issues/46)**
 
 ***NOTE:** This document is incomplete. I will try to add to it as more features/issues are discussed/discovered.*
 
