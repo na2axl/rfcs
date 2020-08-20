@@ -156,7 +156,7 @@ public partial class Object
 }
 ```
 
-Then in user code, to retrieve the **GProperty** value we just use standard properties, which will act proxies for the corresponding
+Then in user code, to retrieve the **GProperty** value we just use standard properties, which will act as proxies for the corresponding
 **Property Descriptor**.
 
 ```cs
