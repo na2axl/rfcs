@@ -262,13 +262,13 @@ public class Property<T>
   /// <summary>
   /// Get the value of this property in the given object.
   /// </summary>
-  public T Get(GObject.Object o) => _get(o);
+  public T Get(GObject.Object o) => _get is null ? default! : _get(o);
 
   /// <summary>
   /// Set the value of this property in the given object
   /// using the given value.
   /// </summary>
-  public void Set(GObject.Object o, T v) => _set(o, v);
+  public void Set(GObject.Object o, T v) => _set?.Invoke(o, v);
 
   public static Property<T> Register<TObject>(string name, Func<TObject, T>? get = null, Action<TObject, T>? set = null) where TObject: GObject.Object;
 }
