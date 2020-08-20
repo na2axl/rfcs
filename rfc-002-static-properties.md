@@ -184,12 +184,12 @@ public class Property<T>
   /// <summary>
   /// GProperty name.
   /// </summary>
-  public string Name { get; private set; }
+  public string Name { get; private set; } = string.Empty;
 
   /// <summary>
   /// Property name.
   /// </summary>
-  public string PropertyName { get; private set; }
+  public string PropertyName { get; private set; } = string.Empty;
 
   /// <summary>
   /// Is GProperty readable?
@@ -235,17 +235,17 @@ public class Property<T>
   /// <summary>
   /// Property getter.
   /// </summary>
-  private Func<GObject.Object, T> _get;
+  private Func<GObject.Object, T>? _get;
 
   /// <summary>
   /// Property setter.
   /// </summary>
-  private Action<GObject.Object, T> _set;
+  private Action<GObject.Object, T>? _set;
 
   /// <summary>
   /// GProperty name.
   /// </summary>
-  public string Name { get; private set; }
+  public string Name { get; private set; } = string.Empty;
 
   /// <summary>
   /// Is GProperty readable.
@@ -270,7 +270,7 @@ public class Property<T>
   /// </summary>
   public void Set(GObject.Object o, T v) => _set(o, v);
 
-  public static Property<T> Register<TObject>(string name, Func<TObject, T> get = null, Action<TObject, T> set = null) where TObject: GObject.Object;
+  public static Property<T> Register<TObject>(string name, Func<TObject, T>? get = null, Action<TObject, T>? set = null) where TObject: GObject.Object;
 }
 
 // Example of use 1
