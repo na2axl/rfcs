@@ -248,11 +248,6 @@ public class Property<T>
   public string Name { get; private set; }
 
   /// <summary>
-  /// Property name.
-  /// </summary>
-  public string PropertyName { get; private set; }
-
-  /// <summary>
   /// Is GProperty readable.
   /// </summary>
   public bool IsReadable => _get != null;
