@@ -18,6 +18,7 @@ A detailed technical proposal to integrate static GProperty descriptors into Gir
     - [Implicitly defined](#implicitly-defined)
     - [Pro and Cons of explicit and implicit methods](#pro-and-cons-of-explicit-and-implicit-methods)
   - [Goal F : Allow easy registration and initialization of a **GProperty** into a **GObject**](#goal-f--allow-easy-registration-and-initialization-of-a-gproperty-into-a-gobject)
+  - [Goal G : Don't forget child **GProperties**](#goal-g--dont-forget-child-gproperties)
 
 ## Terminology
 
@@ -313,6 +314,74 @@ only once, to _describe_ the **GProperty** to initialize to the **GObject** it d
 like `class_init`, `g_object_class_install_properties`, or `g_object_new_with_properties` to create the proper **GObject**.
 
 > See [RFC001] to learn more about **GObject** type initialization.
+
+## Goal G : Don't forget child **GProperties**
+
+In GLib, there is the possibility to register child **GProperties** to a type, the `GtkContainer` and all its subtypes are a
+great example. In Gir.Core we also have to provide a way to the user to do the same.
+
+For that, we can simply add a `RegisterChild()` static method to our current `Property` class
+
+```cs
+public class Property<T>
+{
+  /// <summary>
+  /// Property getter.
+  /// </summary>
+  private Func<GObject.Object, T>? _get;
+
+  /// <summary>
+  /// Property setter.
+  /// </summary>
+  private Action<GObject.Object, T>? _set;
+
+  /// <summary>
+  /// GProperty name.
+  /// </summary>
+  public string Name { get; private set; } = string.Empty;
+
+  /// <summary>
+  /// Is GProperty readable?
+  /// </summary>
+  public bool IsReadable => _get != null;
+
+  /// <summary>
+  /// Is GProperty writeable?
+  /// </summary>
+  public bool IsWriteable => _set != null;
+
+  /// <summary>
+  /// Is this GProperty a child property?
+  /// </summary>
+  public bool IsChild { get; private set; }
+
+  private Property();
+
+  /// <summary>
+  /// Get the value of this property in the given object.
+  /// </summary>
+  public T Get(GObject.Object o) => _get is null ? default! : _get(o);
+
+  /// <summary>
+  /// Set the value of this property in the given object
+  /// using the given value.
+  /// </summary>
+  public void Set(GObject.Object o, T v) => _set?.Invoke(o, v);
+
+  public static Property<T> Register<TObject>(string name, Func<TObject, T>? get = null, Action<TObject, T>? set = null) where TObject: GObject.Object;
+
+  public static Property<T> RegisterChild<TObject>(string name, Func<TObject, T>? get = null, Action<TObject, T>? set = null) where TObject: GObject.Object;
+}
+
+// Example 01
+public static readonly Property<bool> ExpandProperty = Property<bool>.RegisterChild<Box>("expand", get: (o) => o.Expand, set: (o, v) => o.Expand = v);
+
+public bool Expand
+{
+  get => GetProperty(ExpandProperty);
+  set => SetProperty(ExpandProperty, value);
+}
+```
 
 [bindings]: ./rfc-003-mvvm-binding.md
 [RFC001]: ./rfc-001-type-integration.md
