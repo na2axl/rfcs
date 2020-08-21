@@ -1,7 +1,7 @@
 # Static GProperty Descriptors
 
 A detailed technical proposal to integrate static GProperty descriptors into Gir.Core &mdash; 
-**See TODO:LINK_TO_ISSUE**
+**See [gircore/gir.core#57](https://github.com/gircore/gir.core/issues/57)**
 
 ## Summary
 - [Static GProperty Descriptors](#static-gproperty-descriptors)
